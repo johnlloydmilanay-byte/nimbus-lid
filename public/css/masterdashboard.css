@@ -1,0 +1,64 @@
+.custom-card {
+    border: none;
+    border-radius: 15px;
+    color: white;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Card Colors */
+.card-1  { background: linear-gradient(135deg, #007bff, #00bfff); }   /* Blue */
+.card-2  { background: linear-gradient(135deg, #28a745, #6fdc8c); }   /* Green */
+.card-3  { background: linear-gradient(135deg, #6f42c1, #b084f5); }   /* Purple */
+.card-4  { background: linear-gradient(135deg, #ff5733, #ff8d70); }   /* Orange */
+.card-5  { background: linear-gradient(135deg, #f39c12, #f1c40f); }   /* Yellow */
+.card-6  { background: linear-gradient(135deg, #e74c3c, #ff7675); }   /* Red */
+.card-7  { background: linear-gradient(135deg, #1abc9c, #48c9b0); }   /* Teal */
+.card-8  { background: linear-gradient(135deg, #34495e, #5d6d7e); }   /* Dark Gray */
+.card-9  { background: linear-gradient(135deg, #9b59b6, #e056fd); }   /* Violet */
+.card-10 { background: linear-gradient(135deg, #2c3e50, #3498db); }   /* Navy → Blue */
+
+.custom-card .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-card .icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.custom-card .label {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.custom-card h2 {
+    font-weight: bold;
+    font-size: 2.5rem;
+    margin: 8px 0 0;
+}
+
+.custom-card .card-footer {
+    background: rgba(255, 255, 255, 0.15);
+    border-top: none;
+    border-radius: 0 0 15px 15px;
+}
+
+.custom-card .card-footer a {
+    color: white !important;
+    font-weight: 500;
+}

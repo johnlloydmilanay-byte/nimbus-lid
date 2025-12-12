@@ -1,0 +1,109 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #1c1c1c, #000000);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    background-color: #111;
+    color: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 0 25px rgba(0,0,0,0.7);
+}
+
+.login-card h1 {
+    font-size: 1.5rem;
+    color: #F4C430;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.login-card img {
+    display: block;
+    margin: 0 auto 1rem;
+    max-width: 100px;
+}
+
+.form-control {
+    background-color: #1c1c1c;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.form-control:focus {
+    background-color: #1c1c1c;
+    color: #111;
+    border-color: #F4C430;
+    box-shadow: none;
+}
+
+.btn-login {
+    background-color: #F4C430;
+    color: #000;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #e6b800;
+}
+
+.form-check-label {
+    color: #fff;
+}
+
+.alert {
+    border-radius: 10px;
+    text-align: center;
+}
+
+.forgot-password {
+    color: #F4C430;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    color: #e6b800;
+    text-decoration: underline;
+}
+
+/* Input field customization */
+.form-control {
+    background-color: #fdfdfd; /* slightly whiter than default */
+    border: 1px solid #ccc;
+    color: #000;
+}
+
+.form-control:focus {
+    background-color: #ffffff; /* pure white on focus */
+    border-color: #ffcc00; /* optional: match your gold theme */
+    box-shadow: 0 0 5px rgba(255,204,0,0.5);
+}
+
+.btn-login {
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+}
+
+.btn-login:hover {
+    background-color: #e6b800;
+    color: #000;
+}
+
+.forgot-password {
+    font-size: 0.85rem;
+    color: #ffcc00;
+    text-decoration: underline;
+}
+
+.forgot-password:hover {
+    color: #e6b800;
+}
