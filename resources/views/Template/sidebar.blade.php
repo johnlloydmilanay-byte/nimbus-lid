@@ -219,48 +219,45 @@
                 </div>
             </li>
 
-            <!-- Laboratory & Inventory Department -->
-            <li class="nav-item">
-                <div class="menu-block {{ Request::is('lid*') ? 'with-bg' : '' }}">
-                    <a class="nav-linkhead {{ Request::is('lid*') ? 'active' : 'collapsed' }}"
-                        href="#" data-bs-toggle="collapse" data-bs-target="#collapseLid"
-                        aria-expanded="{{ Request::is('lid*') ? 'true' : 'false' }}"
-                        aria-controls="collapseLid">
-                            <i class="bi bi-flask-fill me-3"></i> LID - Laboratory
-                            <div class="ms-auto"><i class="fas fa-angle-down"></i></div>
+                <!-- Laboratory & Inventory Department -->
+<li class="nav-item">
+    <div class="menu-block {{ Request::is('lid*') ? 'with-bg' : '' }}">
+        <a class="nav-linkhead {{ Request::is('lid*') ? 'active' : 'collapsed' }}"
+            href="#" data-bs-toggle="collapse" data-bs-target="#collapseLid"
+            aria-expanded="{{ Request::is('lid*') ? 'true' : 'false' }}"
+            aria-controls="collapseLid">
+                <i class="bi bi-flask-fill me-3"></i> LID - Laboratory
+                <div class="ms-auto"><i class="fas fa-angle-down"></i></div>
+        </a>
+
+        <div class="collapse {{ Request::is('lid*') ? 'show' : '' }}" id="collapseLid">
+            <ul class="nav flex-column ms-4">
+
+                <li>
+                    <a class="nav-link {{ Request::is('lid/reservations') ? 'active' : '' }}"
+                    href="{{ url('/lid/reservations') }}">
+                        Reservation Management
                     </a>
+                </li>
 
-                    <div class="collapse {{ Request::is('lid*') ? 'show' : '' }}" id="collapseLid">
-                        <ul class="nav flex-column ms-4">
+                <li>
+                    <a class="nav-link {{ Request::is('lid/reservations/student-create') ? 'active' : '' }}"
+                    href="{{ url('/lid/reservations/student-create') }}">
+                        Student Reservation
+                    </a>
+                </li>
 
-                            <li>
-                                <a class="nav-link {{ Request::is('lid/reservations*') ? 'active' : '' }}"
-                                href="{{ url('/lid/reservations') }}">
-                                    Chemical Reservations
-                                </a>
-                            </li>
+                <li>
+                    <a class="nav-link {{ Request::is('lid/inventory*') ? 'active' : '' }}"
+                    href="{{ url('/lid/inventory') }}">
+                        Laboratory Inventory
+                    </a>
+                </li>
 
-                            <li>
-                                <a class="nav-link {{ Request::is('lid/pdea*') ? 'active' : '' }}"
-                                href="{{ url('/lid/pdea') }}">
-                                    PDEA-Regulated Chemicals
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="nav-link {{ Request::is('lid/inventory*') ? 'active' : '' }}"
-                                href="{{ url('/lid/inventory') }}">
-                                    Laboratory Inventory
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </li>
-
-
-
+            </ul>
+        </div>
+    </div>
+</li>
             
         @endif
 

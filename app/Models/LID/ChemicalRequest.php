@@ -1,20 +1,28 @@
 <?php
+
 namespace App\Models\LID;
 
 use Illuminate\Database\Eloquent\Model;
 
 class ChemicalRequest extends Model
 {
+    protected $table = 'chemical_requests';
+    
     protected $fillable = [
         'reservation_id',
         'name',
-        'solution',
-        'concentration',
+        'is_solution',
+        'has_concentration',
         'concentration_value',
+        'concentration_unit',
         'volume',
-        'instruction',
+        'volume_unit',
+        'quantity_per_group',
+        'total_quantity',
+        'unit',
+        'instruction'
     ];
-
+    
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);

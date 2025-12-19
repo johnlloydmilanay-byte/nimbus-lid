@@ -219,11 +219,59 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [HumanResourcesController::class, 'store'])->name('hr.store');
     });
 
-   // LID – Laboratory & Inventory Department
-    Route::prefix('lid')->name('lid.')->group(function () {
-        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-        Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-        Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
-    });
+// LID – Laboratory & Inventory Department
+Route::prefix('lid')->name('lid.')->group(function () {
+    // Reservation routes
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    
+    // Student reservation routes
+    Route::get('/reservations/student-create', [ReservationController::class, 'studentCreate'])->name('student-reservations.create');
+    Route::post('/reservations/student', [ReservationController::class, 'storeStudentReservation'])->name('student-reservations.store');
+    Route::get('/reservations/faculty/{reference}', [ReservationController::class, 'getFacultyReservation'])->name('reservations.get-faculty');
+    
+    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::get('/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('/reservations/{id}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::post('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
+    // Chemical management routes
+    Route::get('/chemicals', [ChemicalController::class, 'index'])->name('chemicals.index');
+    Route::get('/chemicals/create', [ChemicalController::class, 'create'])->name('chemicals.create');
+    Route::post('/chemicals', [ChemicalController::class, 'store'])->name('chemicals.store');
+    Route::get('/chemicals/{id}/edit', [ChemicalController::class, 'edit'])->name('chemicals.edit');
+    Route::put('/chemicals/{id}', [ChemicalController::class, 'update'])->name('chemicals.update');
+    Route::delete('/chemicals/{id}', [ChemicalController::class, 'destroy'])->name('chemicals.destroy');
+
+    // PDEA Chemical management routes
+    Route::get('/pdea-chemicals', [PDEAChemicalController::class, 'index'])->name('pdea-chemicals.index');
+    Route::get('/pdea-chemicals/create', [PDEAChemicalController::class, 'create'])->name('pdea-chemicals.create');
+    Route::post('/pdea-chemicals', [PDEAChemicalController::class, 'store'])->name('pdea-chemicals.store');
+    Route::get('/pdea-chemicals/{id}/edit', [PDEAChemicalController::class, 'edit'])->name('pdea-chemicals.edit');
+    Route::put('/pdea-chemicals/{id}', [PDEAChemicalController::class, 'update'])->name('pdea-chemicals.update');
+    Route::delete('/pdea-chemicals/{id}', [PDEAChemicalController::class, 'destroy'])->name('pdea-chemicals.destroy');
+
+
+    Route::get('/glassware', [GlasswareController::class, 'index'])->name('glassware.index');
+    Route::get('/glassware/create', [GlasswareController::class, 'create'])->name('glassware.create');
+    Route::post('/glassware', [GlasswareController::class, 'store'])->name('glassware.store');
+    Route::get('/glassware/{id}/edit', [GlasswareController::class, 'edit'])->name('glassware.edit');
+    Route::put('/glassware/{id}', [GlasswareController::class, 'update'])->name('glassware.update');
+    Route::delete('/glassware/{id}', [GlasswareController::class, 'destroy'])->name('glassware.destroy');
+
+    Route::get('/equipment', [EquipmentController::class, 'index'])->name('equipment.index');
+    Route::get('/equipment/create', [EquipmentController::class, 'create'])->name('equipment.create');
+    Route::post('/equipment', [EquipmentController::class, 'store'])->name('equipment.store');
+    Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])->name('equipment.edit');
+    Route::put('/equipment/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
+    Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
+
+    Route::get('/reservations/{id}/edit-modal', [ReservationController::class, 'editModal'])->name('reservations.edit-modal');
+
+    // Dashboard route
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+});
 
 });
