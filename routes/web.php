@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LID\ReservationController;
+use App\Http\Controllers\Registrar\OtrController;
+use App\Http\Controllers\PPFMO\ServiceRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,7 +198,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Registar Routes
+        // Registrar Routes
     Route::prefix('registrar')->group(function () {
         Route::get('/student', [StudentManagementController::class, 'index'])->name('registrar.studentmanagement.index');
         Route::get('/student/create', [StudentManagementController::class, 'create'])->name('registrar.studentmanagement.create');
@@ -210,7 +212,44 @@ Route::middleware('auth')->group(function () {
         Route::patch('/studentmanagement/edit/{applicationNumber}/shs/update', [StudentManagementController::class, 'shsRequirementUpdate'])->name('registrar.studentmanagement.shsRequirementUpdate');
         Route::patch('/studentmanagement/edit/{applicationNumber}/jhs/update', [StudentManagementController::class, 'jhsRequirementUpdate'])->name('registrar.studentmanagement.jhsRequirementUpdate');
         Route::patch('/studentmanagement/edit/{applicationNumber}/pse/update', [StudentManagementController::class, 'pseRequirementUpdate'])->name('registrar.studentmanagement.pseRequirementUpdate');
-    });
+
+        // --- OTR Management Routes ---
+        Route::get('/otr', [OtrController::class, 'index'])->name('registrar.otr.index');
+        Route::get('/otr/create', [OtrController::class, 'create'])->name('registrar.otr.create');
+        Route::post('/otr', [OtrController::class, 'store'])->name('registrar.otr.store');
+        Route::get('/otr/{id}', [OtrController::class, 'show'])->name('registrar.otr.show');
+        Route::get('/otr/{id}/edit', [OtrController::class, 'edit'])->name('registrar.otr.edit');
+        Route::put('/otr/{id}', [OtrController::class, 'update'])->name('registrar.otr.update');
+        Route::delete('/otr/{id}', [OtrController::class, 'destroy'])->name('registrar.otr.destroy');
+        
+        // OTR Specific Actions
+        Route::get('/otr/{id}/pdf', [OtrController::class, 'generatePDF'])->name('registrar.otr.pdf');
+        Route::get('/registrar/otr/{id}/export-grades', [OtrController::class, 'exportGradesExcel'])->name('registrar.otr.export-grades');
+        Route::get('/otr/search', [OtrController::class, 'search'])->name('registrar.otr.search');
+
+        // === ADD IMPORT ROUTES HERE ===
+        Route::get('/otr/import', [OtrController::class, 'importForm'])->name('registrar.otr.import');
+        Route::post('/otr/import', [OtrController::class, 'import'])->name('registrar.otr.import.process');
+        Route::get('/otr/import/template', [OtrController::class, 'downloadTemplate'])->name('registrar.otr.import.template');
+        // ==============================
+
+        // Add Grade Routes
+        Route::get('/otr/{id}/grade/add', [OtrController::class, 'addGradeForm'])->name('registrar.otr.grade.add');
+        Route::post('/otr/{id}/grade', [OtrController::class, 'storeGrade'])->name('registrar.otr.grade.store');
+        Route::get('/otr/{id}/grade/{gradeId}/edit', [OtrController::class, 'editGradeForm'])->name('registrar.otr.grade.edit');
+        Route::put('/otr/{id}/grade/{gradeId}', [OtrController::class, 'updateGrade'])->name('registrar.otr.grade.update');
+        Route::delete('/otr/{id}/grade/{gradeId}', [OtrController::class, 'deleteGrade'])->name('registrar.otr.grade.delete');
+        Route::post('/otr/{id}/grade/import', [OtrController::class, 'importGrades'])->name('registrar.otr.grade.import');
+        Route::post('/otr/{id}/grade/store-multiple', [OtrController::class, 'storeMultipleGrades'])->name('registrar.otr.grade.store-multiple');
+        Route::post('/otr/{id}/grades/bulk', [OtrController::class, 'bulkStoreGrades'])->name('registrar.otr.grade.bulk.store');    
+
+        // Import routes
+        Route::get('registrar/otr/import', [OtrController::class, 'showImportForm'])->name('registrar.otr.import');
+        Route::post('registrar/otr/import', [OtrController::class, 'import'])->name('registrar.otr.import.store');
+        Route::get('registrar/otr/template', [OtrController::class, 'downloadTemplate'])->name('registrar.otr.template');
+        Route::get('registrar/otr/template/generate', [OtrController::class, 'generateTemplate'])->name('registrar.otr.template.generate');
+                
+        });
 
     // Human Resources Routes
     Route::prefix('hr/employees')->group(function () {
@@ -219,59 +258,74 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [HumanResourcesController::class, 'store'])->name('hr.store');
     });
 
-// LID – Laboratory & Inventory Department
-Route::prefix('lid')->name('lid.')->group(function () {
-    // Reservation routes
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
-    
-    // Student reservation routes
-    Route::get('/reservations/student-create', [ReservationController::class, 'studentCreate'])->name('student-reservations.create');
-    Route::post('/reservations/student', [ReservationController::class, 'storeStudentReservation'])->name('student-reservations.store');
-    Route::get('/reservations/faculty/{reference}', [ReservationController::class, 'getFacultyReservation'])->name('reservations.get-faculty');
-    
-    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
-    Route::get('/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
-    Route::put('/reservations/{id}', [ReservationController::class, 'update'])->name('reservations.update');
-    Route::post('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
-    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+    // LID – Laboratory & Inventory Department
+    Route::prefix('lid')->name('lid.')->group(function () {
+        // Reservation routes
+        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+        Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+        
+        // Student reservation routes
+        Route::get('/reservations/student-create', [ReservationController::class, 'studentCreate'])->name('student-reservations.create');
+        Route::post('/reservations/student', [ReservationController::class, 'storeStudentReservation'])->name('student-reservations.store');
+        Route::get('/reservations/faculty/{reference}', [ReservationController::class, 'getFacultyReservation'])->name('reservations.get-faculty');
+        
+        Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
+        Route::get('/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+        Route::put('/reservations/{id}', [ReservationController::class, 'update'])->name('reservations.update');
+        Route::post('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
+        Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 
-    // Chemical management routes
-    Route::get('/chemicals', [ChemicalController::class, 'index'])->name('chemicals.index');
-    Route::get('/chemicals/create', [ChemicalController::class, 'create'])->name('chemicals.create');
-    Route::post('/chemicals', [ChemicalController::class, 'store'])->name('chemicals.store');
-    Route::get('/chemicals/{id}/edit', [ChemicalController::class, 'edit'])->name('chemicals.edit');
-    Route::put('/chemicals/{id}', [ChemicalController::class, 'update'])->name('chemicals.update');
-    Route::delete('/chemicals/{id}', [ChemicalController::class, 'destroy'])->name('chemicals.destroy');
+        // Chemical management routes
+        Route::get('/chemicals', [ChemicalController::class, 'index'])->name('chemicals.index');
+        Route::get('/chemicals/create', [ChemicalController::class, 'create'])->name('chemicals.create');
+        Route::post('/chemicals', [ChemicalController::class, 'store'])->name('chemicals.store');
+        Route::get('/chemicals/{id}/edit', [ChemicalController::class, 'edit'])->name('chemicals.edit');
+        Route::put('/chemicals/{id}', [ChemicalController::class, 'update'])->name('chemicals.update');
+        Route::delete('/chemicals/{id}', [ChemicalController::class, 'destroy'])->name('chemicals.destroy');
 
-    // PDEA Chemical management routes
-    Route::get('/pdea-chemicals', [PDEAChemicalController::class, 'index'])->name('pdea-chemicals.index');
-    Route::get('/pdea-chemicals/create', [PDEAChemicalController::class, 'create'])->name('pdea-chemicals.create');
-    Route::post('/pdea-chemicals', [PDEAChemicalController::class, 'store'])->name('pdea-chemicals.store');
-    Route::get('/pdea-chemicals/{id}/edit', [PDEAChemicalController::class, 'edit'])->name('pdea-chemicals.edit');
-    Route::put('/pdea-chemicals/{id}', [PDEAChemicalController::class, 'update'])->name('pdea-chemicals.update');
-    Route::delete('/pdea-chemicals/{id}', [PDEAChemicalController::class, 'destroy'])->name('pdea-chemicals.destroy');
+        // PDEA Chemical management routes
+        Route::get('/pdea-chemicals', [PDEAChemicalController::class, 'index'])->name('pdea-chemicals.index');
+        Route::get('/pdea-chemicals/create', [PDEAChemicalController::class, 'create'])->name('pdea-chemicals.create');
+        Route::post('/pdea-chemicals', [PDEAChemicalController::class, 'store'])->name('pdea-chemicals.store');
+        Route::get('/pdea-chemicals/{id}/edit', [PDEAChemicalController::class, 'edit'])->name('pdea-chemicals.edit');
+        Route::put('/pdea-chemicals/{id}', [PDEAChemicalController::class, 'update'])->name('pdea-chemicals.update');
+        Route::delete('/pdea-chemicals/{id}', [PDEAChemicalController::class, 'destroy'])->name('pdea-chemicals.destroy');
 
 
-    Route::get('/glassware', [GlasswareController::class, 'index'])->name('glassware.index');
-    Route::get('/glassware/create', [GlasswareController::class, 'create'])->name('glassware.create');
-    Route::post('/glassware', [GlasswareController::class, 'store'])->name('glassware.store');
-    Route::get('/glassware/{id}/edit', [GlasswareController::class, 'edit'])->name('glassware.edit');
-    Route::put('/glassware/{id}', [GlasswareController::class, 'update'])->name('glassware.update');
-    Route::delete('/glassware/{id}', [GlasswareController::class, 'destroy'])->name('glassware.destroy');
+        Route::get('/glassware', [GlasswareController::class, 'index'])->name('glassware.index');
+        Route::get('/glassware/create', [GlasswareController::class, 'create'])->name('glassware.create');
+        Route::post('/glassware', [GlasswareController::class, 'store'])->name('glassware.store');
+        Route::get('/glassware/{id}/edit', [GlasswareController::class, 'edit'])->name('glassware.edit');
+        Route::put('/glassware/{id}', [GlasswareController::class, 'update'])->name('glassware.update');
+        Route::delete('/glassware/{id}', [GlasswareController::class, 'destroy'])->name('glassware.destroy');
 
-    Route::get('/equipment', [EquipmentController::class, 'index'])->name('equipment.index');
-    Route::get('/equipment/create', [EquipmentController::class, 'create'])->name('equipment.create');
-    Route::post('/equipment', [EquipmentController::class, 'store'])->name('equipment.store');
-    Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])->name('equipment.edit');
-    Route::put('/equipment/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
-    Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
+        Route::get('/equipment', [EquipmentController::class, 'index'])->name('equipment.index');
+        Route::get('/equipment/create', [EquipmentController::class, 'create'])->name('equipment.create');
+        Route::post('/equipment', [EquipmentController::class, 'store'])->name('equipment.store');
+        Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])->name('equipment.edit');
+        Route::put('/equipment/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
+        Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
 
-    Route::get('/reservations/{id}/edit-modal', [ReservationController::class, 'editModal'])->name('reservations.edit-modal');
+        Route::get('/reservations/{id}/edit-modal', [ReservationController::class, 'editModal'])->name('reservations.edit-modal');
 
-    // Dashboard route
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-});
+        // Dashboard route
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    });
+
+    // PPFMO Service Requests Routes
+    Route::prefix('ppfmo')->name('ppfmo.')->group(function () {
+        Route::prefix('service-requests')->name('service-requests.')->group(function () {
+            Route::get('/', [ServiceRequestController::class, 'index'])->name('index');
+            Route::get('/create', [ServiceRequestController::class, 'create'])->name('create');
+            Route::post('/', [ServiceRequestController::class, 'store'])->name('store');
+            Route::get('/{serviceRequest}', [ServiceRequestController::class, 'show'])->name('show');
+            Route::get('/{serviceRequest}/edit', [ServiceRequestController::class, 'edit'])->name('edit');
+            Route::put('/{serviceRequest}', [ServiceRequestController::class, 'update'])->name('update');
+            Route::delete('/{serviceRequest}', [ServiceRequestController::class, 'destroy'])->name('destroy');
+            Route::get('/get-reports-by-type', [ServiceRequestController::class, 'getReportsByType'])->name('get-reports-by-type');
+        });
+        
+    });
 
 });

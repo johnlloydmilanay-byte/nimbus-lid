@@ -177,7 +177,7 @@
                 </div>
             </li>
             
-            <!-- Registrar -->
+     <!-- Registrar -->
             <li class="nav-item">
                 <div class="menu-block {{ Request::is('registrar*') ? 'with-bg' : '' }}">
                     <a class="nav-linkhead {{ Request::is('registrar*') ? 'active' : 'collapsed' }}"
@@ -192,6 +192,10 @@
                             <li>
                                 <a class="nav-link {{ Request::is('registrar/student*') ? 'active' : '' }}"
                                 href="{{ url('/registrar/student') }}">Student Management</a>
+                            </li>
+                            <li>
+                                <a class="nav-link {{ Request::is('registrar/otr*') ? 'active' : '' }}"
+                                href="{{ url('/registrar/otr') }}">OTR Management</a>
                             </li>
                         </ul>
                     </div>
@@ -219,45 +223,92 @@
                 </div>
             </li>
 
-                <!-- Laboratory & Inventory Department -->
-<li class="nav-item">
-    <div class="menu-block {{ Request::is('lid*') ? 'with-bg' : '' }}">
-        <a class="nav-linkhead {{ Request::is('lid*') ? 'active' : 'collapsed' }}"
-            href="#" data-bs-toggle="collapse" data-bs-target="#collapseLid"
-            aria-expanded="{{ Request::is('lid*') ? 'true' : 'false' }}"
-            aria-controls="collapseLid">
-                <i class="bi bi-flask-fill me-3"></i> LID - Laboratory
-                <div class="ms-auto"><i class="fas fa-angle-down"></i></div>
-        </a>
-
-        <div class="collapse {{ Request::is('lid*') ? 'show' : '' }}" id="collapseLid">
-            <ul class="nav flex-column ms-4">
-
-                <li>
-                    <a class="nav-link {{ Request::is('lid/reservations') ? 'active' : '' }}"
-                    href="{{ url('/lid/reservations') }}">
-                        Reservation Management
+            <!-- Laboratory & Inventory Department -->
+            <li class="nav-item">
+                <div class="menu-block {{ Request::is('lid*') ? 'with-bg' : '' }}">
+                    <a class="nav-linkhead {{ Request::is('lid*') ? 'active' : 'collapsed' }}"
+                        href="#" data-bs-toggle="collapse" data-bs-target="#collapseLid"
+                        aria-expanded="{{ Request::is('lid*') ? 'true' : 'false' }}"
+                        aria-controls="collapseLid">
+                            <i class="bi bi-flask-fill me-3"></i> LID - Laboratory
+                            <div class="ms-auto"><i class="fas fa-angle-down"></i></div>
                     </a>
-                </li>
 
-                <li>
-                    <a class="nav-link {{ Request::is('lid/reservations/student-create') ? 'active' : '' }}"
-                    href="{{ url('/lid/reservations/student-create') }}">
-                        Student Reservation
+                    <div class="collapse {{ Request::is('lid*') ? 'show' : '' }}" id="collapseLid">
+                        <ul class="nav flex-column ms-4">
+
+                            <li>
+                                <a class="nav-link {{ Request::is('lid/reservations') ? 'active' : '' }}"
+                                href="{{ url('/lid/reservations') }}">
+                                    Reservation Management
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link {{ Request::is('lid/reservations/student-create') ? 'active' : '' }}"
+                                href="{{ url('/lid/reservations/student-create') }}">
+                                    Student Reservation
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link {{ Request::is('lid/inventory*') ? 'active' : '' }}"
+                                href="{{ url('/lid/inventory') }}">
+                                    Laboratory Inventory
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- PPFMO - Physical Plant & Facilities Management Office -->
+            <li class="nav-item">
+                <div class="menu-block {{ Request::is('ppfmo*') ? 'with-bg' : '' }}">
+                    <a class="nav-linkhead {{ Request::is('ppfmo*') ? 'active' : 'collapsed' }}"
+                        href="#" data-bs-toggle="collapse" data-bs-target="#collapsePpfmo"
+                        aria-expanded="{{ Request::is('ppfmo*') ? 'true' : 'false' }}"
+                        aria-controls="collapsePpfmo">
+                            <i class="bi bi-tools me-3"></i> PPFMO - Physical Plant
+                            <div class="ms-auto"><i class="fas fa-angle-down"></i></div>
                     </a>
-                </li>
 
-                <li>
-                    <a class="nav-link {{ Request::is('lid/inventory*') ? 'active' : '' }}"
-                    href="{{ url('/lid/inventory') }}">
-                        Laboratory Inventory
-                    </a>
-                </li>
+                    <div class="collapse {{ Request::is('ppfmo*') ? 'show' : '' }}" id="collapsePpfmo">
+                        <ul class="nav flex-column ms-4">
 
-            </ul>
-        </div>
-    </div>
-</li>
+                            <li>
+                                <a class="nav-link {{ Request::is('ppfmo/service-requests') ? 'active' : '' }}"
+                                href="{{ route('ppfmo.service-requests.index') }}">
+                                    Service Requests
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link {{ Request::is('ppfmo/service-requests/create') ? 'active' : '' }}"
+                                href="{{ route('ppfmo.service-requests.create') }}">
+                                    Create New Request
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link {{ Request::is('ppfmo/service-requests/reports') ? 'active' : '' }}"
+                                href="#">
+                                    Reports & Analytics
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link {{ Request::is('ppfmo/maintenance-personnel') ? 'active' : '' }}"
+                                href="#">
+                                    Maintenance Personnel
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </li>
             
         @endif
 
